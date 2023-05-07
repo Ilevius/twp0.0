@@ -1,0 +1,57 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+ <head>
+  <meta charset="utf-8" />
+  <title>TWP3</title>
+
+
+  <link rel="stylesheet" href="{% static 'TWP4/css/style.css' %}">
+</head>
+ <body>
+
+    <div id="wrapper">
+        <div id="header">
+            <nav>
+                <span><a href="/TWP/students">Кадры</a></span>
+                <span><a href="/TWP/works">Работы</a></span>
+                <span><a href="/TWP">Шаблоны работ</a></span>
+            </nav>
+            
+        </div>
+        <div id="bars" class="row">
+            <div id="sidebar-left">
+                <div class="panel">
+                    <div class="panel-header">{% block leftPanelHeader %} {% endblock %}</div>
+                    {% block leftPanelContent %} {% endblock %}
+                </div>
+            </div>
+            <div id="middle">
+                <div class="panel">
+                    <div class="panel-header">{% block midPanelHeader %} {% endblock %}</div>
+                    {% block midPanelContent %} {% endblock %}
+                </div>
+            </div>
+            <div id="sidebar-right">
+                <div class="panel">
+                    <div class="panel-header">{% block rightPanelHeader %} {% endblock %}</div>
+                    {% block rightPanelContent %} {% endblock %}
+                </div>
+            </div>
+        </div>
+        <div id="footer">
+            {% block footerContent %} {% endblock %}
+        </div>
+    </div>
+
+
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async
+            src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js">
+    </script>
+    <script src="https://unpkg.com/vue@next"></script>
+    {% block scripts %} {% endblock scripts %}
+    <script src= "{% static 'TWP4/js/all.min.js' %}"></script> <!-- assuming you've saved the file in the root -->;
+ </body>
+</html>

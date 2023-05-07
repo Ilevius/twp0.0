@@ -1,0 +1,72 @@
+{% extends 'TWP4/base.html' %}
+{% load static %}
+
+{% block leftPanelHeader %} Список шаблонов работ {% endblock %}
+
+
+
+
+{% block leftPanelContent %} 
+<br>
+
+<hr>
+
+<div id="templatesList">
+    <span v-if="!templates.length">Здесь появится список шаблонов.</span>
+    <ul>
+        <li v-for = '(template, idx) in templates'> 
+            <span v-on:click = "openTemplate(template.id)" v-html="template.name"> </span>  <button class = "btn-del" v-on:click = "deleteTemplate(template.id)">Х</button>
+        </li>
+    </ul>
+    <hr>
+    <p><button class="btn-add" v-if="currentTemplate.id" v-on:click = "newTemplateMenu">Добавить шаблон</button> </p>
+</div>
+
+{% endblock %}
+
+{% block midPanelHeader %} Редактор работ: Новая работа, не сохранена на сервере. {% endblock %}
+
+{% block midPanelContent %} 
+<input type="text" id="workTitle" placeholder="Введите название работы"  minlength="20" size="14" v-on:input = "inputTemplateTitle" v-bind:value = 'currentTemplate.name'>
+<div class="row" id = "WorkEditor">
+    
+    <div id="tasklist">
+        <ol>
+            <li v-for = '(task, idx) in tasks'> 
+                <textarea 
+                name="" 
+                v-bind:id="idx" 
+                cols="60" 
+                rows="10"
+                type="text" 
+                placeholder="Введите текст задания"
+                v-on:input = "changeTask" 
+                v-on:input = "MakePreview" 
+                v-html = 'task.body'>
+                </textarea>
+
+                <button class = "btn-del" v-on:click = "DeleteTask(idx)">X</button>
+            </li>
+        </ol>
+        <hr>
+        <button class="btn-add" v-on:click = "adNewTask">Добавить задание</button> 
+        <button v-on:click = "saveTemplate" >Сохранить работу</button>
+    </div>
+
+    <div id="tasklist-preview" v-html = 'PreviewContent'>
+        
+    </div>
+
+</div>
+{% endblock %}
+
+
+
+
+
+{% block rightPanelHeader %} Правая панель {% endblock %}
+{% block rightPanelContent %} <p><button v-on:click = "testMethod" >Кнопка для тестов</button></p> {% endblock %}
+
+
+{% block scripts %} <script src="{% static 'TWP4/js/app.js' %}"></script> {% endblock scripts %}
+

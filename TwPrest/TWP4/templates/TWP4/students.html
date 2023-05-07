@@ -1,0 +1,58 @@
+{% extends 'TWP4/base.html' %}
+{% load static %}
+
+
+
+{% block leftPanelHeader %} все группы  {% endblock %}
+{% block leftPanelContent %} 
+<br>
+<div id="subjectsList">
+    <ul>
+        <span v-if="!allGroups.length">Здесь появится список групп!</span>
+        <li v-for = '(group) in allGroups' v-on:click = 'openGroup(group.id)'> 
+            <span v-html="group.name"></span>
+        </li>
+        <p><button class="btn-add" v-if="curentGroup.id" v-on:click = "addGroupMenu">Добавить группу</button> </p>
+    </ul>
+</div>
+<hr>
+<hr>
+{% endblock %}
+
+
+
+
+{% block midPanelHeader %} Управление студентами и группами {% endblock %}
+{% block midPanelContent %} 
+<input type="text" id="workTitle" placeholder="Введите название группы"  minlength="20" size="14" v-on:input = "inputGroupName" v-bind:value = 'curentGroup.name'>
+<div class="row" id = "WorkEditor">
+    <div id="aGroup">
+        <ol>
+            <li v-for = '(user, idx) in curentGroup.users'> 
+                <input type="text" v-bind:id="idx" class="username" placeholder="Введите имя студента"  minlength="20" size="14" v-on:input = "userPropEdit" v-bind:value = 'user.name'>
+                <input type="text" v-bind:id="idx" class="usersurname" placeholder="Введите фамилию студента"  minlength="20" size="14" v-on:input = "userPropEdit" v-bind:value = 'user.surname'>
+                <button class = "btn-del" v-on:click = "deleteUser({idx:idx, id: user.ID, fio: user.surname+' '+user.name})">X</button>
+            </li>
+        </ol>
+        <hr>
+        <button class="btn-add" v-on:click = "addNewUser">Добавить студента</button> 
+        <button v-on:click = "addGroup" >Сохранить группу</button>
+        <button v-if="curentGroup.id" v-on:click = "deleteGroup(curentGroup.id)" class="btn-del">Удалить группу</button>
+    </div>
+
+</div>
+{% endblock %}
+
+
+
+
+
+{% block rightPanelHeader %}  {% endblock %}
+
+{% block rightPanelContent %}  
+
+{% endblock %}
+
+{% block scripts %} <script src="{% static 'TWP4/js/users.js' %}"></script> {% endblock scripts %}
+
+
