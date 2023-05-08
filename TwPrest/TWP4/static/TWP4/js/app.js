@@ -141,32 +141,11 @@ const WorkEditor = {
         }
     },
 
-    computed: {
-        db: function (){
-            return openDatabase("TWP4", "0.1", "TWP test database", 20000);
-        }
-    },
-
-
     created:  function(){
         this.loadTemplates()
     },
 
     methods: {
-
-        DBask(ask, arg){
-            const db = openDatabase("TWP4", "0.1", "TWP test database", 20000)
-            return new Promise((resolve, reject)=>{
-                if(db) {
-                    db.transaction(tx => { tx.executeSql(ask, arg, (tx, result) => {
-                        resolve(result)
-                    }, (tx, error)=>{reject(error)}) })
-                }
-                else{
-                    reject(new Error('DB connection failed'))
-                }
-            })
-        },
 
 
         APIget(url){
@@ -283,7 +262,7 @@ return {ask: ask, ans: ans}`
         },
 
         loadTemplates(){
-            this.APIget('http://127.0.0.1:8000/api/v1/workTemplates')
+            this.APIget('http://127.0.0.1:8000/api/v1/templates')
             .then(data=>{ 
                 this.templates = data
              })
@@ -295,8 +274,8 @@ return {ask: ask, ans: ans}`
 
         openTemplate: async function(id){
             this.newTemplateMenu()
-            this.currentTemplate = await this.APIget('http://127.0.0.1:8000/api/v1/workTemplates/'+id)
-            this.tasks = this.currentTemplate.templateExercises
+            this.currentTemplate = await this.APIget('http://127.0.0.1:8000/api/v1/template/'+id)
+            this.tasks = this.currentTemplate.exercises
             this.MakePreview()
 
         },
@@ -304,19 +283,18 @@ return {ask: ask, ans: ans}`
 
         deleteTemplate(id){
             if(confirm('Удалить шаблон?')){
-                this.DBask('delete from templates where id =?', [id]).then(result=>{
+                this.APIdelete('http://127.0.0.1:8000/api/v1/template/'+id).then(res=>{
                     this.loadTemplates()
                     this.newTemplateMenu()
-                },error=>{
-                    console.log(error)
-                }) 
+                }, err=>{console.log(err)})
+
             }         
         },
 
 
         saveTemplate() {
             if(this.currentTemplate.ID){
-                allInserts =[]
+                /*allInserts =[]
                 this.DBask('update templates set title = ? where id = ?',[this.currentTemplate.title, this.currentTemplate.ID]).then(result=>{
                     for (let exercise of this.tasks){
                         allInserts.push(this.DBask('update exercises set body = ? where id = ?',[exercise.body, exercise.ID]))
@@ -326,7 +304,7 @@ return {ask: ask, ans: ans}`
                         this.newTemplateMenu()
                         console.log('Шаблон изменен!'+result);
                       })   
-                }, error=>{console.log(error)})
+                }, error=>{console.log(error)})*/
             }
             else{
                 allInserts =[]

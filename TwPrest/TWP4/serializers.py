@@ -2,19 +2,40 @@ from rest_framework import serializers
 from .models import *
 
 
-class ArticleSerializer(serializers.ModelSerializer):
+class GroupSerializer(serializers.ModelSerializer):
     class Meta:
-        model = studentGroup
+        model = Group
         fields = ('id', 'name', 'comment')
 
-class templateExerciseSerializer(serializers.ModelSerializer):
+class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
-        model = templateExercise
+        model = Exercise
         fields = ('id', 'name', 'body', 'comment')
 
 
-class workTemplateSerializer(serializers.ModelSerializer):
-    templateExercises = templateExerciseSerializer(many=True)
+class ExercisePostSerializer(serializers.ModelSerializer):
     class Meta:
-        model = workTemplate
-        fields = ('id', 'name', 'comment', 'templateExercises')
+        model = Exercise
+        fields = ('name', 'body', 'comment')
+
+
+class TemplateSerializer(serializers.ModelSerializer):
+    exercises = ExerciseSerializer(many=True, read_only=True)
+    class Meta:
+        model = Template
+        fields = ('id', 'name', 'comment', 'exercises')
+
+
+class TemplateListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Template
+        fields = ('id', 'name', 'comment')
+
+
+class TemplatePostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Template
+        fields = ('id', 'name', 'comment')
+
+
+

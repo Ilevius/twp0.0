@@ -1,53 +1,67 @@
 from django.shortcuts import render
 from rest_framework import generics
+from rest_framework.views import APIView
+from rest_framework.response import Response
 from .models import * 
 from .serializers import *
 
 
-class ArticleApiView(generics.ListAPIView): 
-    queryset = studentGroup.objects.all()
-    serializer_class = ArticleSerializer
+class GroupsApiView(generics.ListAPIView): 
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
 
 
-class SomeGroup(generics.RetrieveUpdateDestroyAPIView): 
-    queryset = studentGroup.objects.all()
-    serializer_class = ArticleSerializer
+class GroupApiView(generics.RetrieveUpdateDestroyAPIView): 
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
 
-class NewGroup(generics.CreateAPIView): 
-    queryset = studentGroup.objects.all()
-    serializer_class = ArticleSerializer
-
-
-
-class allWorkTemplates(generics.ListAPIView): 
-    queryset = workTemplate.objects.all()
-    serializer_class = workTemplateSerializer
-
-class someWorkTemplate(generics.RetrieveUpdateDestroyAPIView): 
-    queryset = workTemplate.objects.all()
-    serializer_class = workTemplateSerializer
-
-class newWorkTemplate(generics.CreateAPIView): 
-    queryset = workTemplate.objects.all()
-    serializer_class = workTemplateSerializer
+class NewGroupApiView(generics.CreateAPIView): 
+    queryset = Group.objects.all()
+    serializer_class = GroupSerializer
 
 
+#                                                           Here we work with Templates 
+class TemplatesApiView(generics.ListAPIView): 
+    queryset = Template.objects.all()
+    serializer_class = TemplateListSerializer
+
+class TemplateApiView(generics.RetrieveUpdateDestroyAPIView): 
+    queryset = Template.objects.all()
+    serializer_class = TemplateSerializer
+
+class NewTemplateApiView(generics.CreateAPIView): 
+    queryset = Template.objects.all()
+    serializer_class = TemplatePostSerializer
 
 
-class allExercises(generics.ListAPIView): 
-    queryset = templateExercise.objects.all()
-    serializer_class = templateExerciseSerializer
 
-class someExercise(generics.RetrieveUpdateDestroyAPIView): 
-    queryset = templateExercise.objects.all()
-    serializer_class = templateExerciseSerializer
 
-class newExercise(generics.CreateAPIView): 
-    queryset = templateExercise.objects.all()
-    serializer_class = templateExerciseSerializer
+class ExercisesApiView(generics.ListAPIView): 
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer
 
-    
+class ExerciseApiView(generics.RetrieveUpdateDestroyAPIView): 
+    queryset = Exercise.objects.all()
+    serializer_class = ExerciseSerializer
 
+class NewExerciseApiView(generics.CreateAPIView): 
+    queryset = Exercise.objects.all()
+    serializer_class = ExercisePostSerializer
+
+class setTemplExer(APIView):
+    def post(self, request):
+        try:
+            template_id = request.data['template']
+            exercise_id = request.data['exercise']
+            exercise = Exercise.objects.get(pk=exercise_id)
+            template = Template.objects.get(pk=template_id)
+            template.exercises.add(exercise)
+            return Response({'chosen templ': template.name, 'chosen exer': exercise.name})
+        except:
+            return Response({'error': 'whrong keys'})
+        
+
+#{"template":1, "exercise":2}
 
 def workTemplates(request):
     return render(request, 'TWP4/workTemplates.html')    

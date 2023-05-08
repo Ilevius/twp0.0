@@ -1,22 +1,7 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User   
 
-class Article(models.Model): 
-    title = models.CharField(max_length=255) 
-    content = models.TextField(blank=True) 
-    cat = models.ForeignKey('Category', on_delete=models.PROTECT, null=True)
-
-    def __str__(self):
-        return self.title
-    
-class Category(models.Model):
-    name = models.CharField(max_length=100, db_index=True)   
-
-    def __str__(self):
-        return self.name
-    
-
-class studentGroup(models.Model): 
+class Group(models.Model): 
     name = models.CharField(max_length=255) 
     comment = models.TextField(blank=True) 
     students = models.ManyToManyField(User)
@@ -24,7 +9,7 @@ class studentGroup(models.Model):
     def __str__(self):
         return self.name
     
-class templateExercise(models.Model): 
+class Exercise(models.Model): 
     name = models.CharField(max_length=255) 
     comment = models.TextField(blank=True)
     body = models.TextField(blank=True)  
@@ -32,10 +17,10 @@ class templateExercise(models.Model):
     def __str__(self):
         return self.name
 
-class workTemplate(models.Model): 
+class Template(models.Model): 
     name = models.CharField(max_length=255) 
     comment = models.TextField(blank=True) 
-    templateExercises = models.ManyToManyField(templateExercise)
+    exercises = models.ManyToManyField(Exercise, blank=True)
 
     def __str__(self):
         return self.name

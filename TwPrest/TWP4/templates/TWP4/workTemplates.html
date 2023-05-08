@@ -42,7 +42,8 @@
                 placeholder="Введите текст задания"
                 v-on:input = "changeTask" 
                 v-on:input = "MakePreview" 
-                v-html = 'task.body'>
+                v-bind:value = 'task.body'
+                >
                 </textarea>
 
                 <button class = "btn-del" v-on:click = "DeleteTask(idx)">X</button>
@@ -65,7 +66,7 @@
 
 
 {% block rightPanelHeader %} Правая панель {% endblock %}
-{% block rightPanelContent %} <p><button v-on:click = "testMethod" >Кнопка для тестов</button></p> {% endblock %}
+{% block rightPanelContent %}  {% endblock %}
 
 
 {% block scripts %} <script src="{% static 'TWP4/js/app.js' %}"></script> {% endblock scripts %}
