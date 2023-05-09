@@ -13,12 +13,6 @@ class ExerciseSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'body', 'comment')
 
 
-class ExercisePostSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Exercise
-        fields = ('name', 'body', 'comment')
-
-
 class TemplateSerializer(serializers.ModelSerializer):
     exercises = ExerciseSerializer(many=True, read_only=True)
     class Meta:

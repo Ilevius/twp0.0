@@ -252,7 +252,7 @@ return {ask: ask, ans: ans}`
         // CRUD for tamplates
 
         inputTemplateTitle(event) {
-            this.currentTemplate.title = event.target.value  
+            this.currentTemplate.name = event.target.value  
         },
 
         newTemplateMenu(){
@@ -293,35 +293,54 @@ return {ask: ask, ans: ans}`
 
 
         saveTemplate() {
-            if(this.currentTemplate.ID){
-                /*allInserts =[]
-                this.DBask('update templates set title = ? where id = ?',[this.currentTemplate.title, this.currentTemplate.ID]).then(result=>{
+            let allInserts = []
+            const templateData = {"name": this.currentTemplate.name, "comment": ""}
+            let exerciseData = {"name":"coming soon", "body":"", "comment":""}
+            if(this.currentTemplate.id){
+                this.APIput("http://127.0.0.1:8000/api/v1/template/"+this.currentTemplate.id, templateData).then(response=>{
+                    const theTemplate = response.id
                     for (let exercise of this.tasks){
-                        allInserts.push(this.DBask('update exercises set body = ? where id = ?',[exercise.body, exercise.ID]))
+                        exerciseData.body = exercise.body
+                        if(exercise.id){
+                            this.APIput("http://127.0.0.1:8000/api/v1/exercise/"+exercise.id, exerciseData).then(res=>{
+                                allInserts.push(this.APIpost("http://127.0.0.1:8000/api/v1/settemplexer", {"template": theTemplate, "exercise": res.id}))
+                            }, error=>{console.log('Ошибка сохранения упражнения' + error)})
+                        }
+                        else{
+                            this.APIpost("http://127.0.0.1:8000/api/v1/exercise/new", exerciseData).then(res=>{
+                                allInserts.push(this.APIpost("http://127.0.0.1:8000/api/v1/settemplexer", {"template": theTemplate, "exercise": res.id}))
+                            }, error=>{console.log('Ошибка сохранения упражнения' + error)})
+                        }
                     }
                     Promise.all(allInserts).then(result => {
                         this.loadTemplates()
-                        this.newTemplateMenu()
-                        console.log('Шаблон изменен!'+result);
-                      })   
-                }, error=>{console.log(error)})*/
+                        this.openTemplate(theTemplate)
+                        console.log('Шаблон добавлен'+result);
+                      }, error=>{console.log('Не удалось связать шаблон и упражнение: '+error)}) 
+                }, error=>{console.log('Не удалось сохранить новый шаблон: '+error)})
             }
             else{
-                allInserts =[]
-                this.DBask('INSERT INTO templates (title) VALUES (?)',[this.currentTemplate.title]).then(result=>{
-                    let theTemplate = result.insertId
+                this.APIpost("http://127.0.0.1:8000/api/v1/template/new", templateData).then(response=>{
+                    const theTemplate = response.id
                     for (let exercise of this.tasks){
-                        this.DBask('INSERT INTO exercises (body) VALUES (?)',[exercise.body]).then(result=>{
-                            let theExercise = result.insertId
-                            allInserts.push(this.DBask('INSERT INTO templates_exercises (template, exercise) VALUES (?, ?)',[theTemplate, theExercise]))
-                        }, error=>{console.log(error)})
+                        exerciseData.body = exercise.body
+                        if(exercise.id){
+                            this.APIput("http://127.0.0.1:8000/api/v1/exercise/"+exercise.id, exerciseData).then(res=>{
+                                allInserts.push(this.APIpost("http://127.0.0.1:8000/api/v1/settemplexer", {"template": theTemplate, "exercise": res.id}))
+                            }, error=>{console.log('Ошибка сохранения упражнения' + error)})
+                        }
+                        else{
+                            this.APIpost("http://127.0.0.1:8000/api/v1/exercise/new", exerciseData).then(res=>{
+                                allInserts.push(this.APIpost("http://127.0.0.1:8000/api/v1/settemplexer", {"template": theTemplate, "exercise": res.id}))
+                            }, error=>{console.log('Ошибка сохранения упражнения' + error)})
+                        }
                     }
                     Promise.all(allInserts).then(result => {
                         this.loadTemplates()
-                        this.newTemplateMenu()
+                        this.openTemplate(theTemplate)
                         console.log('Шаблон добавлен'+result);
-                      })   
-                }, error=>{console.log(error)})
+                      }, error=>{console.log('Не удалось связать шаблон и упражнение: '+error)}) 
+                }, error=>{console.log('Не удалось сохранить новый шаблон: '+error)})
             }
         },
 

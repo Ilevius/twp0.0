@@ -46,7 +46,7 @@ class ExerciseApiView(generics.RetrieveUpdateDestroyAPIView):
 
 class NewExerciseApiView(generics.CreateAPIView): 
     queryset = Exercise.objects.all()
-    serializer_class = ExercisePostSerializer
+    serializer_class = ExerciseSerializer
 
 class setTemplExer(APIView):
     def post(self, request):
