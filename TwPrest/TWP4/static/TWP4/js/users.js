@@ -56,7 +56,7 @@ const studentEditor = {
         },
 
         fetchGroups(){
-            this.APIget('http://127.0.0.1:8000/api/v1/studentGroups')
+            this.APIget('http://127.0.0.1:8000/api/v1/groups')
             .then(data=>{ 
                 this.allGroups = data
              })
@@ -74,7 +74,7 @@ const studentEditor = {
             this.curentGroup.id = groupId
             this.curentGroup.users = []
             let users = []
-            let curentGroup = await this.APIget('http://127.0.0.1:8000/api/v1/studentGroups/'+groupId)
+            let curentGroup = await this.APIget('http://127.0.0.1:8000/api/v1/group/'+groupId)
             this.curentGroup.name =  curentGroup.name
             this.curentGroup.id =  curentGroup.id
             /*res = await this.DBask('SELECT * FROM users where id in (select usr from users_groups where grp =?) order by surname',[groupId])
