@@ -4,12 +4,23 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from .models import * 
 from .serializers import *
+from django.contrib.auth.models import User 
+
+
+
+class UsersApiView(generics.ListAPIView): 
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
+class UserApiView(generics.RetrieveUpdateDestroyAPIView): 
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+
 
 
 class GroupsApiView(generics.ListAPIView): 
     queryset = Group.objects.all()
-    serializer_class = GroupSerializer
-
+    serializer_class = GroupsSerializer
 
 class GroupApiView(generics.RetrieveUpdateDestroyAPIView): 
     queryset = Group.objects.all()
