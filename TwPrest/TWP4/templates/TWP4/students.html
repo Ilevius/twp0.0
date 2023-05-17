@@ -28,10 +28,10 @@
 <div class="row" id = "WorkEditor">
     <div id="aGroup">
         <ol>
-            <li v-for = '(user, idx) in curentGroup.users'> 
-                <input type="text" v-bind:id="idx" class="username" placeholder="Введите имя студента"  minlength="20" size="14" v-on:input = "userPropEdit" v-bind:value = 'user.name'>
-                <input type="text" v-bind:id="idx" class="usersurname" placeholder="Введите фамилию студента"  minlength="20" size="14" v-on:input = "userPropEdit" v-bind:value = 'user.surname'>
-                <button class = "btn-del" v-on:click = "deleteUser({idx:idx, id: user.ID, fio: user.surname+' '+user.name})">X</button>
+            <li v-for = 'student in curentGroup.students'> 
+                <input type="text" v-bind:id="student.id" class="username" placeholder="Введите имя студента"  minlength="20" size="14" v-on:input = "userPropEdit" v-bind:value = 'student.first_name'>
+                <input type="text" v-bind:id="student.id" class="usersurname" placeholder="Введите фамилию студента"  minlength="20" size="14" v-on:input = "userPropEdit" v-bind:value = 'student.last_name'>
+                <button class = "btn-del" v-on:click = "deleteUser({idx:student.id, id: student.id, fio: student.username+' '+student.username})">X</button>
             </li>
         </ol>
         <hr>

@@ -101,50 +101,64 @@ const WorkEditor = {
 
     methods: {
     //                      Group CRUD    
-        DBask(ask, arg){
-            const db = openDatabase("TWP4", "0.1", "TWP test database", 20000)
-            return new Promise((resolve, reject)=>{
-                if(db) {
-                    db.transaction(tx => { tx.executeSql(ask, arg, (tx, result) => {
-                        resolve(result)
-                    }, (tx, error)=>{reject(error)}) })
-                }
-                else{
-                    reject(new Error('DB connection failed'))
-                }
+        APIget(url){
+            return fetch(url).then(response => {
+                return response.json()
             })
         },
 
+        APIpost(url, data){
+            const options = {
+                method: 'POST',
+                headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(data)
+            }
+            return fetch(url, options).then(response => {
+                return response.json()
+            })
+        },
+
+        APIdelete(url){
+            return fetch(url, {
+            method: 'DELETE',
+            })
+            .then(res =>{return res.text()}) // or res.json()
+        },
+
+
+        APIput(url, data){
+            const options = {
+                method: 'PUT',
+                headers: {
+                'Content-Type': 'application/json;charset=utf-8'
+                },
+                body: JSON.stringify(data)
+            }
+            return fetch(url, options).then(response => {
+                return response.json()
+            })
+        },
+
+        DBask(){//затычка
+        },
+
         loadWorks(){
-            let itemsList = []
-            this.DBask('SELECT * FROM works',[]).then(res=>{
-                for (var i = 0; i < res.rows.length; i++) 
-                {
-                    itemsList.push(res.rows.item(i))
-                }
-                this.allWorks = itemsList
+            this.APIget('http://127.0.0.1:8000/api/v1/works').then(res=>{
+                this.allWorks = res
             })
         },
 
         loadGroups(){
-            let itemsList = []
-            this.DBask('SELECT id, name FROM groups',[]).then(res=>{
-                for (var i = 0; i < res.rows.length; i++) 
-                {
-                    itemsList.push(res.rows.item(i))
-                }
-                this.groups = itemsList
+            this.APIget('http://127.0.0.1:8000/api/v1/groups').then(res=>{
+                this.groups = res
             })
         },
 
         loadTemplates(){
-            let itemsList = []
-            this.DBask('SELECT id, title FROM templates',[]).then(res=>{
-                for (var i = 0; i < res.rows.length; i++) 
-                {
-                    itemsList.push(res.rows.item(i))
-                }
-                this.templates = itemsList
+            this.APIget('http://127.0.0.1:8000/api/v1/templates').then(res=>{
+                this.templates = res
             })
         },
 
@@ -166,7 +180,7 @@ const WorkEditor = {
         }, 
 
         addNewWork: async function(){
-            let thisWork = await this.DBask('insert into works (grp, name, template, date) values (?, ?, ?, ?)',[this.curentWork.group, this.curentWork.name, this.curentWork.template, this.curentWork.date])
+            /*let thisWork = await this.DBask('insert into works (grp, name, template, date) values (?, ?, ?, ?)',[this.curentWork.group, this.curentWork.name, this.curentWork.template, this.curentWork.date])
             let thisWorkId = thisWork.insertId
             let theseUsers = await this.DBask('select usr from users_groups where grp = ?',[this.curentWork.group])
             let theseExercises = await this.DBask('SELECT * FROM exercises where id in (SELECT exercise FROM templates_exercises where template =?) order by id',[this.curentWork.template])
@@ -182,11 +196,11 @@ const WorkEditor = {
                     this.DBask('insert into tasks (student, work, ask, rightanswer) values (?, ?, ?, ?)',[thisUserId, thisWorkId, ask, rightanswer])
                 }
             }
-            this.loadWorks() 
+            this.loadWorks() */
         },
 
         openWork(workId){
-            this.DBask('select * from works where id = ?',[workId]).then(theWork=>{
+            /*this.APIget('http://127.0.0.1:8000/api/v1/group/'+workId).then(theWork=>{
                 theWork = theWork.rows.item(0)
                 this.curentWork.id = workId
                 this.curentWork.name = theWork.name 
@@ -197,7 +211,7 @@ const WorkEditor = {
                 this.DBask('select title from templates where id = ?',[theWork.template]).then(res=>{
                     this.curentWork.template = res.rows.item(0).title
                 })   
-            })
+            })*/
         },
 
         deleteWork(workId){
@@ -298,17 +312,6 @@ const WorkEditor = {
 
         },
 
-        createTable() {
-            db = openDatabase("TWP4", "0.1", "TWP test database", 20000);
-            if(db) {
-                console.log('The database has been connected')
-                db.transaction(function(tx) {
-                    tx.executeSql("CREATE TABLE tasks (ID Integer PRIMARY KEY AUTOINCREMENT, student Integer, ask text, rightanswer text, answer text, work Integer, date Integer)", [], function(result){alert('ok!')}, function(tx, error){alert('error')});
-                    });
-            } 
-            else {console.log('ERROR! The database has not been connected!'); return;}
-        },
-
 
         writeFile(name, value) {
             var val = value;
@@ -329,12 +332,3 @@ const WorkEditor = {
 
 Vue.createApp(WorkEditor).mount('#bars')
 
-/*            this.DBask('SELECT * FROM users_groups',[]).then(res=>{
-                
-                console.log(res.rows.length)
-            }, error=>{
-                console.log(error)
-            })
-            
-            CREATE TABLE tasks (ID Integer PRIMARY KEY AUTOINCREMENT, student Integer, ask text, rightanswer text, answer text, work Integer, date Integer
-            */

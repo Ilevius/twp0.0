@@ -71,6 +71,10 @@ class setTemplExer(APIView):
         except:
             return Response({'error': 'whrong keys'})
         
+class WorksApiView(generics.ListAPIView):  
+    queryset = Work.objects.all()
+    serializer_class = WorksSerializer      
+        
 
 #{"template":1, "exercise":2}
 

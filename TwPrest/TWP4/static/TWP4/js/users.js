@@ -1,7 +1,7 @@
 const studentEditor = {
     data() {
         return {
-            curentGroup: {id:'', name:'', users: [], comment: ''},
+            curentGroup: {id:'', name:'', students: [], comment: ''},
             allGroups: []
         }
     },
@@ -71,29 +71,19 @@ const studentEditor = {
         },
 
         openGroup: async function(groupId){
-            this.curentGroup.id = groupId
-            this.curentGroup.users = []
-            let users = []
-            let curentGroup = await this.APIget('http://127.0.0.1:8000/api/v1/group/'+groupId)
-            this.curentGroup.name =  curentGroup.name
-            this.curentGroup.id =  curentGroup.id
-            /*res = await this.DBask('SELECT * FROM users where id in (select usr from users_groups where grp =?) order by surname',[groupId])
-            for (var i = 0; i < res.rows.length; i++){
-                users.push(res.rows.item(i))
-            }*/
-            this.curentGroup.users = users
+            this.curentGroup = await this.APIget('http://127.0.0.1:8000/api/v1/group/'+groupId)
         },
 
 
         addGroup: async function(){
             let postInfo = {name: this.curentGroup.name, comment:''}
             if(this.curentGroup.id){ //                     Если эта группа имеет id => она есть в базе, значит редактируем ее найдя по этому id
-                let respon = await this.APIput('http://127.0.0.1:8000/api/v1/studentGroups/'+this.curentGroup.id, postInfo)
+                let respon = await this.APIput('http://127.0.0.1:8000/api/v1/group/'+this.curentGroup.id, postInfo)
                 this.fetchGroups()
                 this.curentGroup.id = respon.id
 
             } else{                 //                      Иначе добавляем в базу
-                let respon = await this.APIpost('http://127.0.0.1:8000/api/v1/studentGroups/new', postInfo)
+                let respon = await this.APIpost('http://127.0.0.1:8000/api/v1/group/new', postInfo)
                 this.curentGroup.id = respon.id
                 this.fetchGroups()
             }
@@ -107,7 +97,7 @@ const studentEditor = {
 
         deleteGroup(id){
             if(confirm('Вы уверены, что хотите удалить группу?')){
-                this.APIdelete('http://127.0.0.1:8000/api/v1/studentGroups/'+id)
+                this.APIdelete('http://127.0.0.1:8000/api/v1/group/'+id)
                 .then(data=>{ 
                     this.fetchGroups()
                     this.addGroupMenu()
@@ -150,23 +140,3 @@ const studentEditor = {
 }
 
 Vue.createApp(studentEditor).mount('#bars')
-
-
-
-
-  
-
-
-/* 
-"CREATE TABLE groups (ID Integer PRIMARY KEY AUTOINCREMENT, name text)"
-"CREATE TABLE users (ID Integer PRIMARY KEY AUTOINCREMENT, name text, surname text)" 
-"CREATE TABLE users_groups (ID Integer PRIMARY KEY AUTOINCREMENT, usr integer, grp integer)"
-
-"CREATE TABLE templates (ID Integer PRIMARY KEY AUTOINCREMENT, title text)"
-"CREATE TABLE exercises (ID Integer PRIMARY KEY AUTOINCREMENT, body text)"
-"CREATE TABLE templates_exercises (ID Integer PRIMARY KEY AUTOINCREMENT, template integer, exercise integer)"
-
-"CREATE TABLE works (ID Integer PRIMARY KEY AUTOINCREMENT, name text, grp integer, template integer, date text)"
-"CREATE TABLE tasks (ID Integer PRIMARY KEY AUTOINCREMENT, student Integer, ask text, rightanswer text, answer text, work Integer, date Integer)"
-*/
-
