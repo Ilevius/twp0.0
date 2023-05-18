@@ -16,7 +16,7 @@ urlpatterns = [
     path('api/v1/exercise/new', NewExerciseApiView.as_view()),
     path('api/v1/settemplexer', setTemplExer.as_view()),
     path('api/v1/users', UsersApiView.as_view()),
-    path('api/v1/works', WorksApiView.as_view())
-    
-
+    path('api/v1/works', WorksApiView.as_view()),
+    path('api/v1/work/<int:pk>', WorkApiView.as_view()),
+    path('api/v1/task/<int:pk>', TaskApiView.as_view()),
 ]

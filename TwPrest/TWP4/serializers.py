@@ -49,8 +49,19 @@ class TemplatePostSerializer(serializers.ModelSerializer):
 
 class WorksSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Template
+        model = Work
         fields = ('id', 'name', 'comment')    
 
 
+class WorkSerializer(serializers.ModelSerializer):
+    group = GroupSerializer(read_only=True)
+    template = TemplateSerializer(read_only=True)
+    class Meta:
+        model = Work
+        fields = ('id', 'name', 'comment', 'startdate', 'finishdate', 'group', 'template')  
 
+
+class TaskSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ('__all__')

@@ -74,7 +74,15 @@ class setTemplExer(APIView):
 class WorksApiView(generics.ListAPIView):  
     queryset = Work.objects.all()
     serializer_class = WorksSerializer      
-        
+
+class WorkApiView(generics.RetrieveUpdateDestroyAPIView):  
+    queryset = Work.objects.all()
+    serializer_class = WorkSerializer      
+
+class TaskApiView(generics.RetrieveUpdateDestroyAPIView):  
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer       
+
 
 #{"template":1, "exercise":2}
 

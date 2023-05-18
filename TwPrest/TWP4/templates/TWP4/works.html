@@ -10,7 +10,7 @@
 <div id="subjectsList">
     <ul>
         <span v-if="!allWorks">Здесь появится список работ!</span>
-        <li v-for = '(work) in allWorks' v-on:click = 'openWork(work.ID)'> 
+        <li v-for = '(work) in allWorks' v-on:click = 'openWork(work.id)'> 
             <span v-html = 'work.name'></span> 
         </li>
     </ul>
@@ -52,12 +52,19 @@
 
     <div id="existingWork" v-else>
         <p><input type="text" id="workName" placeholder="Введите название работы"  minlength="50" size="90" v-on:input = "workPropEdit" v-bind:value = 'curentWork.name'></p>
+
         <p>
-            <label for="workDate">Выберите дату проведения работы:</label>
-            <input type="datetime-local" id="workDate" name="workDate" v-on:input = "workPropEdit" v-bind:value = 'curentWork.date'>
+            <label for="workDate">Дата начала работы:</label>
+            <input type="datetime-local" id="workDate" name="workDate" v-on:input = "workPropEdit" v-bind:value = 'curentWork.startdate'>
         </p>
-        <p>Group: {{curentWork.group}}</p>
-        <p>Template: {{curentWork.template}}</p>
+
+        <p>
+            <label for="workDate">Дата окончания работы:</label>
+            <input type="datetime-local" id="workDate" name="workDate" v-on:input = "workPropEdit" v-bind:value = 'curentWork.finishdate'>
+        </p>
+
+        <p>Группа: <span v-html = 'curentWork.group.name'></span> </p>
+        <p>Шаблон: <span v-html = 'curentWork.template.name'></span></p>
         <hr>
         <button class="btn-add" v-on:click = "">Save changes</button>  <button class="btn-add" v-on:click = "printWork(curentWork.id)">Make LaTeX file</button> 
         <button class="btn-add" v-on:click = "checkWork">Give answers</button> <button class="btn-del" v-on:click = "deleteWork(curentWork.id)">Delete work</button>

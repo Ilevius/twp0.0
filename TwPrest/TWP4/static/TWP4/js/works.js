@@ -200,28 +200,14 @@ const WorkEditor = {
         },
 
         openWork(workId){
-            /*this.APIget('http://127.0.0.1:8000/api/v1/group/'+workId).then(theWork=>{
-                theWork = theWork.rows.item(0)
-                this.curentWork.id = workId
-                this.curentWork.name = theWork.name 
-                this.curentWork.date = theWork.date
-                this.DBask('select name from groups where id = ?',[theWork.grp]).then(res=>{
-                    this.curentWork.group = res.rows.item(0).name
-                })  
-                this.DBask('select title from templates where id = ?',[theWork.template]).then(res=>{
-                    this.curentWork.template = res.rows.item(0).title
-                })   
-            })*/
+            this.APIget('http://127.0.0.1:8000/api/v1/work/'+workId).then(theWork=>{
+                this.curentWork = theWork
+            })
         },
 
         deleteWork(workId){
             if(confirm('Вы уверены, что хотите удалить работу?')){
-                this.DBask('DELETE FROM tasks where work = ?',[workId]).then(()=>{
-                    this.DBask('DELETE FROM works where id = ?',[workId]).then(()=>{
-                        this.curentWork = {id:'', name:'', group: '', template: '', date: ''} 
-                        this.loadWorks()
-                    })    
-                })
+                APIdelete('http://127.0.0.1:8000/api/v1/work/'+workId).then(()=>{})
             }
         },
 
