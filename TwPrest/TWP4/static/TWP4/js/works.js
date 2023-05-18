@@ -167,8 +167,11 @@ const WorkEditor = {
                 this.curentWork.name = event.target.value    
             } else if (event.target.id == 'workGroup'){
                 this.curentWork.group = event.target.value 
-            } else if (event.target.id == 'workDate'){
-            this.curentWork.date = event.target.value 
+            } else if (event.target.id == 'startdate'){
+                this.curentWork.startdate = event.target.value 
+            } 
+              else if (event.target.id == 'finishdate'){
+                this.curentWork.finishdate = event.target.value 
             } else if (event.target.id == 'workTemplate'){
                 this.curentWork.template = event.target.value 
             }
@@ -180,7 +183,11 @@ const WorkEditor = {
         }, 
 
         addNewWork: async function(){
-            /*let thisWork = await this.DBask('insert into works (grp, name, template, date) values (?, ?, ?, ?)',[this.curentWork.group, this.curentWork.name, this.curentWork.template, this.curentWork.date])
+            let postInfo = this.curentWork
+            let respon = await this.APIpost('http://127.0.0.1:8000/api/v1/work/new', postInfo)
+
+            /*
+            let thisWork = await this.DBask('insert into works (grp, name, template, date) values (?, ?, ?, ?)',[this.curentWork.group, this.curentWork.name, this.curentWork.template, this.curentWork.date])
             let thisWorkId = thisWork.insertId
             let theseUsers = await this.DBask('select usr from users_groups where grp = ?',[this.curentWork.group])
             let theseExercises = await this.DBask('SELECT * FROM exercises where id in (SELECT exercise FROM templates_exercises where template =?) order by id',[this.curentWork.template])
@@ -195,8 +202,8 @@ const WorkEditor = {
                     let rightanswer = theTask.ans                    
                     this.DBask('insert into tasks (student, work, ask, rightanswer) values (?, ?, ?, ?)',[thisUserId, thisWorkId, ask, rightanswer])
                 }
-            }
-            this.loadWorks() */
+            }*/
+            this.loadWorks() 
         },
 
         openWork(workId){

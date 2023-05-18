@@ -31,9 +31,15 @@
     <div id="createWork" v-if="!curentWork.id">
         <p><input type="text" id="workName" placeholder="Введите название работы"  minlength="50" size="90" v-on:input = "workPropEdit" v-bind:value = 'curentWork.name'></p>
         <p>
-            <label for="workDate">Выберите дату проведения работы:</label>
-            <input type="datetime-local" id="workDate" name="meeting-time" v-on:input = "workPropEdit" value="2023-06-12T19:30">
+            <label for="workDate">Выберите дату начала работы:</label>
+            <input type="datetime-local" id="startdate" name="meeting-time" v-on:input = "workPropEdit" value="2023-06-12T19:30">
         </p>
+
+        <p>
+            <label for="workDate">Выберите дату окончания работы:</label>
+            <input type="datetime-local" id="finishdate" name="meeting-time" v-on:input = "workPropEdit" value="2023-06-12T19:30">
+        </p>
+
         <p>
             <select name="workGroup" id="workGroup" v-on:input = "workPropEdit">
                 <option v-for = '(group) in groups':value="group.id" v-html = 'group.name'></option>
@@ -55,12 +61,12 @@
 
         <p>
             <label for="workDate">Дата начала работы:</label>
-            <input type="datetime-local" id="workDate" name="workDate" v-on:input = "workPropEdit" v-bind:value = 'curentWork.startdate'>
+            <input type="datetime-local" id="startdate" name="startdate" v-on:input = "workPropEdit" v-bind:value = 'curentWork.startdate'>
         </p>
 
         <p>
             <label for="workDate">Дата окончания работы:</label>
-            <input type="datetime-local" id="workDate" name="workDate" v-on:input = "workPropEdit" v-bind:value = 'curentWork.finishdate'>
+            <input type="datetime-local" id="finishdate" name="finishdate" v-on:input = "workPropEdit" v-bind:value = 'curentWork.finishdate'>
         </p>
 
         <p>Группа: <span v-html = 'curentWork.group.name'></span> </p>

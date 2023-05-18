@@ -3,13 +3,15 @@ from .models import *
 from django.contrib.auth.models import User  
 
 
-
-
+#                                                                          S t u d e n t s
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ('id', 'username', 'first_name', 'last_name')
 
+
+
+#                                                                           G r o u p s         
 class GroupsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Group
@@ -22,12 +24,16 @@ class GroupSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'comment', 'students')
 
 
+
+#                                                                         E x e r s i s e s
 class ExerciseSerializer(serializers.ModelSerializer):
     class Meta:
         model = Exercise
         fields = ('id', 'name', 'body', 'comment')
 
 
+
+#                                                                        T e m p l a t e s 
 class TemplateSerializer(serializers.ModelSerializer):
     exercises = ExerciseSerializer(many=True, read_only=True)
     class Meta:
@@ -47,6 +53,7 @@ class TemplatePostSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'comment')
 
 
+#                                                                       W o r k s 
 class WorksSerializer(serializers.ModelSerializer):
     class Meta:
         model = Work
@@ -61,6 +68,14 @@ class WorkSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'comment', 'startdate', 'finishdate', 'group', 'template')  
 
 
+class WorkPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Work
+        fields = ('__all__')  
+
+
+
+#                                                                       T a s k s 
 class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
