@@ -90,7 +90,7 @@ class TaskApiView(generics.RetrieveUpdateDestroyAPIView):
 
 class NewTaskApiView(generics.CreateAPIView):  
     queryset = Work.objects.all()
-    serializer_class = TaskSerializer  
+    serializer_class = TaskPostSerializer  
 
 
 #{"template":1, "exercise":2}

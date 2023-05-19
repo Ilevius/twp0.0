@@ -127,7 +127,6 @@ const WorkEditor = {
             .then(res =>{return res.text()}) // or res.json()
         },
 
-
         APIput(url, data){
             const options = {
                 method: 'PUT',
@@ -141,8 +140,12 @@ const WorkEditor = {
             })
         },
 
+
+
         DBask(){//затычка
         },
+
+
 
         loadWorks(){
             this.APIget('http://127.0.0.1:8000/api/v1/works').then(res=>{
@@ -183,27 +186,25 @@ const WorkEditor = {
         }, 
 
         addNewWork: async function(){
-            let postInfo = this.curentWork
-            let respon = await this.APIpost('http://127.0.0.1:8000/api/v1/work/new', postInfo)
-
-            /*
-            let thisWork = await this.DBask('insert into works (grp, name, template, date) values (?, ?, ?, ?)',[this.curentWork.group, this.curentWork.name, this.curentWork.template, this.curentWork.date])
-            let thisWorkId = thisWork.insertId
-            let theseUsers = await this.DBask('select usr from users_groups where grp = ?',[this.curentWork.group])
-            let theseExercises = await this.DBask('SELECT * FROM exercises where id in (SELECT exercise FROM templates_exercises where template =?) order by id',[this.curentWork.template])
-            for(var i = 0; i < theseUsers.rows.length; i++){ 
-                let thisUserId = theseUsers.rows.item(i).usr
-                console.log(thisUserId)
-                for(var j = 0; j < theseExercises.rows.length; j++){
-                    let thisExercise = theseExercises.rows.item(j)
-                    let taskRender = new Function(thisExercise.body)
-                    let theTask = taskRender()
-                    let ask =  theTask.ask
-                    let rightanswer = theTask.ans                    
-                    this.DBask('insert into tasks (student, work, ask, rightanswer) values (?, ?, ?, ?)',[thisUserId, thisWorkId, ask, rightanswer])
+            let work = await this.APIpost('http://127.0.0.1:8000/api/v1/work/new', this.curentWork)
+            let group = await this.APIget('http://127.0.0.1:8000/api/v1/group/'+this.curentWork.group)
+            let template = await this.APIget('http://127.0.0.1:8000/api/v1/template/'+this.curentWork.template)
+            for(const student of group.students){
+                for(const exercise of template.exercises){
+                   let task = {} 
+                   task.student = student.id
+                   task.work = work.id
+                   task.comment = 'Coming soon'
+                   let taskRender = new Function(exercise.body)
+                   let theTask = taskRender()
+                   task.ask = theTask.ask
+                   task.rightanswer = theTask.ans
+                   let newTask = await this.APIpost('http://127.0.0.1:8000/api/v1/task/new', task)
+                   console.log(newTask)
                 }
-            }*/
-            this.loadWorks() 
+            }
+            this.loadWorks()
+            // нужно оптимизировать код (массив промисов и тп), добавить отображение окна ожидания
         },
 
         openWork(workId){
@@ -214,15 +215,14 @@ const WorkEditor = {
 
         deleteWork(workId){
             if(confirm('Вы уверены, что хотите удалить работу?')){
-                APIdelete('http://127.0.0.1:8000/api/v1/work/'+workId).then(()=>{})
+                this.APIdelete('http://127.0.0.1:8000/api/v1/work/'+workId).then(()=>{this.loadWorks()})
             }
         },
 
         printWork: async function(workId){
             let text = ''
             text += '\n\\begin{document}'
-            let theWork = await this.DBask('select * from works where id = ?',[workId])
-            theWork = theWork.rows.item(0)
+            let theWork = await this.APIget('http://127.0.0.1:8000/api/v1/work/'+workId)
             let theTasksSQL = await this.DBask('select * from tasks where work = ? order by id',[workId])
             let theTasks = []
             for(var i = 0; i < theTasksSQL.rows.length; i++){

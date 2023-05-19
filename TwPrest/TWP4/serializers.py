@@ -80,3 +80,9 @@ class TaskSerializer(serializers.ModelSerializer):
     class Meta:
         model = Task
         fields = ('__all__')
+
+
+class TaskPostSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Task
+        fields = ('student', 'comment', 'ask', 'rightanswer', 'solution', 'work')
