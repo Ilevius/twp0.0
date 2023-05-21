@@ -93,6 +93,18 @@ class NewTaskApiView(generics.CreateAPIView):
     serializer_class = TaskPostSerializer  
 
 
+class TaskByUserWork(APIView):
+    def post(self, request):
+        try:
+            student_id = request.data['student']
+            work_id = request.data['work']
+            tasks = Task.objects.filter(student=student_id).filter(work=work_id)
+            return Response(tasks.values())
+        except:
+            return Response({'error': 'wrong keys'})
+
+
+#{"student":2, "work":27}
 #{"template":1, "exercise":2}
 
 def workTemplates(request):

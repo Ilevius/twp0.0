@@ -26,6 +26,39 @@
 {% block midPanelContent %} 
 
 
+<div id="revision" v-if="revision">
+    <button class="btn-del" v-on:click = "revision = !revision">X</button><hr>
+    <div id="noWork" v-if="!curentWork.id">Здесь появятся данные для проверки или результаты если выбрать работу</div>
+    <div id="workRevision" v-else>
+        <ul>
+            <li v-for = '(chekItem, idx) in workCheckList'>
+                <span class="fio" v-html="chekItem.name"></span> <span class="fio" v-html="chekItem.surname"></span> 
+
+                <div id="inputAnswer" v-if="!chekItem.passed">
+                <ol >
+                    <li v-for = 'task in chekItem.answers' class="li-inline">
+                        <input class="answerInput" v-on:input = "workPropEdit" type="text" placeholder="Введите ответ"  size="10" v-bind:id = 'task.id' v-bind:name = 'chekItem.studentId'>
+                    </li>
+                </ol>
+                <button class="btn-add" v-on:click = "sendAnswers(chekItem.studentId)">Завершить тестирование</button> 
+                </div>
+
+                <div id="inputAnswer" v-else>
+                    <ol >
+                        <li v-for = 'task in chekItem.answers' class="li-inline">
+                            <span v-if = "parseInt(task.answer,10) == parseInt(task.rightanswer, 10)" class="right-answer">{{task.answer}}</span>
+                            <span v-else class="wrong-answer">{{task.answer}}</span> 
+                            <span> {{task.rightanswer}}</span>
+                        </li>
+                    </ol>
+                </div>
+
+            </li>
+        </ul>
+    </div>
+</div>
+
+
 <div  class="row" id = "WorkEditor">
 
     <div id="createWork" v-if="!curentWork.id">

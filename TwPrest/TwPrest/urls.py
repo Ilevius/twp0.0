@@ -21,4 +21,5 @@ urlpatterns = [
     path('api/v1/task/<int:pk>', TaskApiView.as_view()),
     path('api/v1/work/new', NewWorkApiView.as_view()),
     path('api/v1/task/new', NewTaskApiView.as_view()),
+    path('api/v1/taskbystudentandwork', TaskByUserWork.as_view()),
 ]

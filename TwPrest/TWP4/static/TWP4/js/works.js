@@ -246,35 +246,22 @@ const WorkEditor = {
         },
 
         checkWork: async function(){
+            // отображаем меню ввода ответов
             this.revision = true
-        
-            //                      Собираем все данные о работе
-            let theWork = await this.DBask('select * from works where id = ?',[this.curentWork.id])
-            theWork = theWork.rows.item(0)
-            let theTasksSQL = await this.DBask('select * from tasks where work = ? order by id',[this.curentWork.id])
-            
-            //                      Формируем набор всех заданий для всех студентов для данной работы
-            let theTasks = []
-            for(var i = 0; i < theTasksSQL.rows.length; i++){
-                theTasks.push(theTasksSQL.rows.item(i))
-            }
-            //                      Формируем список студентов
-            let theStudents = await this.DBask('select * from users where id in (select usr from users_groups where grp = ?) order by surname',[theWork.grp])
+                 
             //                      Создаем чек-лист и заполняем его в цикле
             let checkList = []
-            for(var i = 0; i < theStudents.rows.length; i++){
+            for(const student of this.curentWork.group.students){
                 let checkListItem = {}
-                let theStudent = theStudents.rows.item(i)
-                checkListItem.studentId = theStudent.ID
-                checkListItem.name = theStudent.name
-                checkListItem.surname = theStudent.surname
+                checkListItem.studentId = student.id
+                checkListItem.name = student.first_name
+                checkListItem.surname = student.last_name
                 checkListItem.answers = []
                 checkListItem.passed = false
 
-                let theStudentTasks = theTasks.filter(item => item.student == theStudent.ID)
-                
+                let theStudentTasks = await this.APIpost("http://127.0.0.1:8000/api/v1/taskbystudentandwork", {"student": student.id, "work": this.curentWork.id})
                 for(const task of theStudentTasks){
-                    checkListItem.answers.push({id: task.ID, answer: task.answer, rightanswer: task.rightanswer}) 
+                    checkListItem.answers.push({id: task.id, answer: task.answer, rightanswer: task.rightanswer}) 
                     if(task.answer){checkListItem.passed = true}   
                 }
                 
