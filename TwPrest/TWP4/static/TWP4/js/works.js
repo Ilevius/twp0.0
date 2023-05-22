@@ -213,28 +213,21 @@ const WorkEditor = {
             })
         },
 
+        // ^ тут добавить отображение внизу самой работы с ответами и решениями, или соединить это с функционалом checkWork
+
         deleteWork(workId){
             if(confirm('Вы уверены, что хотите удалить работу?')){
                 this.APIdelete('http://127.0.0.1:8000/api/v1/work/'+workId).then(()=>{this.loadWorks()})
             }
         },
 
-        printWork: async function(workId){
+        makeTeX: async function(kind){
             let text = ''
             text += '\n\\begin{document}'
-            let theWork = await this.APIget('http://127.0.0.1:8000/api/v1/work/'+workId)
-            let theTasksSQL = await this.DBask('select * from tasks where work = ? order by id',[workId])
-            let theTasks = []
-            for(var i = 0; i < theTasksSQL.rows.length; i++){
-                theTasks.push(theTasksSQL.rows.item(i))
-            }
             
-            let theStudents = await this.DBask('select * from users where id in (select usr from users_groups where grp = ?) order by surname',[theWork.grp])
-            for(var i = 0; i < theStudents.rows.length; i++){
-                let theStudent = theStudents.rows.item(i)
-
-                text += '\\hfill \\break \\Large \n' + theStudent.name + ' ' + theStudent.surname + '\n \\normalsize'
-                let theStudentTasks = theTasks.filter(item => item.student == theStudent.ID)
+            for(const student of this.curentWork.group.students){
+                text += '\\hfill \\break \\Large \n' + student.first_name + ' ' + student.last_name + '\n \\normalsize'
+                let theStudentTasks = await this.APIpost("http://127.0.0.1:8000/api/v1/taskbystudentandwork", {"student": student.id, "work": this.curentWork.id})
                 text+= '\n \\begin{enumerate}'
                 for(const task of theStudentTasks){
                     text += '\n \\item '+task.ask    
@@ -242,8 +235,12 @@ const WorkEditor = {
                 text+= '\n \\end{enumerate}'
             }
             text += '\n\\end{document}'
-            this.writeFile(theWork.name+".tex", text);
+            this.writeFile(this.curentWork.name+".tex", text)
+            // нужно добавить выбор включения/невключения решения и ответа в файл, оформить в латехе это все в виде окружений 
         },
+
+
+
 
         checkWork: async function(){
             // отображаем меню ввода ответов
@@ -283,14 +280,6 @@ const WorkEditor = {
         },
 
 //                          Other options
-
-        testMethod(){
-
-
-                
-            this.writeFile("9dksk239xwd.txt", "jxowsjsivneic");
-
-        },
 
 
         writeFile(name, value) {

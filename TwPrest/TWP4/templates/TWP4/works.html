@@ -105,7 +105,7 @@
         <p>Группа: <span v-html = 'curentWork.group.name'></span> </p>
         <p>Шаблон: <span v-html = 'curentWork.template.name'></span></p>
         <hr>
-        <button class="btn-add" v-on:click = "">Save changes</button>  <button class="btn-add" v-on:click = "printWork(curentWork.id)">Make LaTeX file</button> 
+        <button class="btn-add" v-on:click = "">Save changes</button>  <button class="btn-add" v-on:click = "makeTeX(curentWork.id)">Make LaTeX file</button> 
         <button class="btn-add" v-on:click = "checkWork">Give answers</button> <button class="btn-del" v-on:click = "deleteWork(curentWork.id)">Delete work</button>
     </div>
 
