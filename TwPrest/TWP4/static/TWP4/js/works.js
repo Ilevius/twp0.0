@@ -258,13 +258,14 @@ const WorkEditor = {
 
                 let theStudentTasks = await this.APIpost("http://127.0.0.1:8000/api/v1/taskbystudentandwork", {"student": student.id, "work": this.curentWork.id})
                 for(const task of theStudentTasks){
-                    checkListItem.answers.push({id: task.id, answer: task.answer, rightanswer: task.rightanswer}) 
+                    checkListItem.answers.push({id: task.id, answer: task.answer, rightanswer: task.rightanswer, ask: task.ask}) 
                     if(task.answer){checkListItem.passed = true}   
                 }
                 
                 checkList.push(checkListItem)
             }
             this.workCheckList = checkList
+            this.MakePreview()
         },
 
         sendAnswers(studentId){
@@ -273,7 +274,7 @@ const WorkEditor = {
                 if(!answer.answer){
                     answer.answer = 'passed' 
                 }
-                this.DBask('update tasks  set answer = ? where id =?',[answer.answer, answer.id]).then(()=>{
+                this.APIput("http://127.0.0.1:8000/api/v1/answertask/"+answer.id, {"answer":answer.answer, "answerdate": "2023-05-23T23:23"}).then(()=>{
                     this.checkWork()
                 })
             }
@@ -294,7 +295,16 @@ const WorkEditor = {
             download.id = "download"; document.body.appendChild(download);
             document.getElementById("download").click();
             document.body.removeChild(download);
-            } 
+        },
+        
+        MakePreview(event) {
+            setTimeout(()=>{
+                MathJax.typesetPromise().then(()=>{
+                    console.log('Typeseted!')
+                })
+            }, 100)
+
+        }
         
     }
 }
