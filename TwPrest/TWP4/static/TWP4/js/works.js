@@ -304,6 +304,15 @@ const WorkEditor = {
                 })
             }, 100)
 
+        },
+
+        expressionVS(lHand, rHand){
+            lHand = nerdamer.convertFromLaTeX("\\frac{\\sqrt{2}}{2}")
+            rHand = nerdamer.convertFromLaTeX("\\frac{5}{\\sqrt{2}}")
+            diff = nerdamer(lHand).subtract(rHand)
+
+            return diff.evaluate().toString()//lHand.eq(rHand).toString()
+
         }
         
     }
