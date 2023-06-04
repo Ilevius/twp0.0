@@ -142,9 +142,6 @@ const WorkEditor = {
 
 
 
-        DBask(){//затычка
-        },
-
 
 
         loadWorks(){
@@ -258,10 +255,11 @@ const WorkEditor = {
 
                 let theStudentTasks = await this.APIpost("http://127.0.0.1:8000/api/v1/taskbystudentandwork", {"student": student.id, "work": this.curentWork.id})
                 for(const task of theStudentTasks){
-                    checkListItem.answers.push({id: task.id, answer: task.answer, rightanswer: task.rightanswer, ask: task.ask}) 
+                    let review = await this.expressionVS(task.answer, task.rightanswer)
+                    checkListItem.answers.push({id: task.id, answer: task.answer, rightanswer: task.rightanswer, ask: task.ask, test: review})                   
                     if(task.answer){checkListItem.passed = true}   
                 }
-                
+                console.log(checkListItem.answers)
                 checkList.push(checkListItem)
             }
             this.workCheckList = checkList
@@ -306,12 +304,42 @@ const WorkEditor = {
 
         },
 
-        expressionVS(lHand, rHand){
-            lHand = nerdamer.convertFromLaTeX("\\frac{\\sqrt{2}}{2}")
-            rHand = nerdamer.convertFromLaTeX("\\frac{5}{\\sqrt{2}}")
+        expressionVS: async function(lHand, rHand){
+            /*lHand = nerdamer.convertFromLaTeX("\\frac{\\sqrt{2}}{2}")
+            rHand = nerdamer.convertFromLaTeX("\\frac{1}{\\sqrt{2}}")
             diff = nerdamer(lHand).subtract(rHand)
+            return diff.evaluate().toString()//lHand.eq(rHand).toString()*/
 
-            return diff.evaluate().toString()//lHand.eq(rHand).toString()
+            let result = await this.APIpost("http://127.0.0.1:8000/api/v1/expresionvs", {"lHand": lHand, "rHand": rHand})
+
+            if(!result.error){
+                if(result.result){
+                    return "Верно"
+                }
+                else{
+                    return "Неверно"
+                }
+            }
+            else{
+                return "Ошибка сравнения"
+            }
+
+            /*this.APIpost("http://127.0.0.1:8000/api/v1/expresionvs", {"lHand": lHand, "rHand": rHand}).then(result=>{
+                if(!result.error){
+                    if(result.result){
+                        return "Верно"
+                    }
+                    else{
+                        return "Неверно"
+                    }
+                }
+                else{
+                    return "Ошибка сравнения"
+                }
+
+            }, error=>{
+                return error
+            })*/
 
         }
         

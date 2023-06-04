@@ -5,8 +5,8 @@ from rest_framework.response import Response
 from .models import * 
 from .serializers import *
 from django.contrib.auth.models import User 
-#from sympy import *
-#from sympy.parsing.latex import parse_latex
+from sympy import *
+from sympy.parsing.latex import parse_latex
 
 
 class UsersApiView(generics.ListAPIView): 
@@ -118,16 +118,15 @@ class ExpresionVS(APIView):
         try:
             lHand = request.data['lHand']
             rHand = request.data['rHand']
-            #lHand = r"{}".format(lHand)
-            #lHand = parse_latex(lHand)
-            #lHand = parse_latex(r"{}".format(lHand))
-            #rHand = parse_latex(r"{}".format(rHand))
-            #result = lHand.equals(rHand)
-            return Response({'result': lHand})
+
+            lHand = parse_latex(r"{}".format(lHand))
+            rHand = parse_latex(r"{}".format(rHand))
+            result = lHand.equals(rHand)
+            return Response({'result': result})
         except:
             return Response({'error': 'wrong keys'})
         
-#{"lHand": "123", "rHand": 56}
+#{"lHand": "\\frac{\\sqrt{2}}{2}", "rHand": "\\frac{1}{\\sqrt{2}}"}
 
 def workTemplates(request):
     return render(request, 'TWP4/workTemplates.html')    

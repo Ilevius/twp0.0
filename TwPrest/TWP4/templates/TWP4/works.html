@@ -51,7 +51,7 @@
                             Ответ:<span v-if = "parseInt(task.answer,10) == parseInt(task.rightanswer, 10)" class="right-answer" v-html="task.answer"></span>
                             <span v-else class="wrong-answer" v-html="task.answer"></span> 
                             <br>Правильный ответ: <span v-html="task.rightanswer"></span>
-                            <hr><span class="fio" v-html="expressionVS(task.answer,task.rightanswer)"></span>
+                            <hr><span class="fio" v-html="task.test"></span>
                             <hr>
                         </li>
                     </ol>
