@@ -43,6 +43,18 @@ const rand_poly_xy = ()=>{
     return `${a}*x^${randInt(0, 3)}*y^${randInt(0, 3)}+${b}*x^${randInt(0, 3)}*y^${randInt(0, 3)}+${c}`
 }
 
+
+const fun_for_extr = ()=>{
+    let acSign = (-1)**randInt(0, 2)
+    let a = randInt(1, 6)*acSign
+    let b = randInt(1, 6)*(-1)**randInt(0, 2)
+    let c = randInt(1, 6)*acSign
+    let d = randInt(1, 6)*(-1)**randInt(0, 2)
+    let e = randInt(1, 6)*(-1)**randInt(0, 2)
+    let f = randInt(1, 6)*(-1)**randInt(0, 2)
+    return `${a}x^2 + b*x*y + ${c}y^2 + ${d}x + ${e}y + ${f}`
+}
+
 const rand_poly_xyz = ()=>{
     let a = randInt(1, 6)
     let b = randInt(-5, 6)

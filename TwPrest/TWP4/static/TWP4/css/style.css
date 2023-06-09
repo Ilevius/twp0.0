@@ -118,3 +118,7 @@ background-color: aquamarine;
     background-color: rgb(49, 235, 164);
     margin-right: 5pt;
 }
+.check-error{
+    background-color: rgb(204, 243, 63);
+    margin-right: 5pt;
+}

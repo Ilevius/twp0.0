@@ -314,14 +314,14 @@ const WorkEditor = {
 
             if(!result.error){
                 if(result.result){
-                    return "Верно"
+                    return '<span class="right-answer" > Верно </span>'
                 }
                 else{
-                    return "Неверно"
+                    return '<span class="wrong-answer" > Неверно </span>'
                 }
             }
             else{
-                return "Ошибка сравнения"
+                return '<span class="check-error" > Ошибка сравнения! </span>'
             }
 
             /*this.APIpost("http://127.0.0.1:8000/api/v1/expresionvs", {"lHand": lHand, "rHand": rHand}).then(result=>{
