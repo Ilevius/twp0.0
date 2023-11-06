@@ -114,16 +114,16 @@ const studentEditor = {
 
     //                      Student CRUD    
         addNewUser(){
-            /*nude = {ID: '', name:'', surname:''}
-            this.curentGroup.users.push(nude)*/
+            nude = {ID: '', name:'', surname:''}
+            this.curentGroup.students.push(nude)
         },
 
         deleteUser(userInfo){
-            /*if(confirm('Вы уверены, что хотите удалить из списка группы этого студента: '+userInfo.fio+'?')){
-                this.DBask('DELETE FROM users_groups where usr = ?',[userInfo.id]).then(()=>{
+            if(confirm('Вы уверены, что хотите удалить из списка группы этого студента: '+userInfo.fio+'?')){
+                /*this.DBask('DELETE FROM users_groups where usr = ?',[userInfo.id]).then(()=>{
                     this.curentGroup.users.splice(userInfo.idx, 1)
-                })
-            }*/
+                })*/
+            }
             
         },
 

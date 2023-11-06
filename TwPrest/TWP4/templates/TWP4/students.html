@@ -31,7 +31,7 @@
             <li v-for = 'student in curentGroup.students'> 
                 <input type="text" v-bind:id="student.id" class="username" placeholder="Введите имя студента"  minlength="20" size="14" v-on:input = "userPropEdit" v-bind:value = 'student.first_name'>
                 <input type="text" v-bind:id="student.id" class="usersurname" placeholder="Введите фамилию студента"  minlength="20" size="14" v-on:input = "userPropEdit" v-bind:value = 'student.last_name'>
-                <button class = "btn-del" v-on:click = "deleteUser({idx:student.id, id: student.id, fio: student.username+' '+student.username})">X</button>
+                <button class = "btn-del" v-on:click = "deleteUser({idx:student.id, id: student.id, fio: student.first_name+' '+student.last_name})">X</button>
             </li>
         </ol>
         <hr>
