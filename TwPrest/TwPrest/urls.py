@@ -1,8 +1,13 @@
 from django.contrib import admin
 from django.urls import path, include
 from TWP4.views import *
+from TwPrest.views import *
 
 urlpatterns = [
+    path('', home, name = 'home'),
+    path('login/', loginUser.as_view(), name = 'login'),
+    path('logout/', logout_user, name = 'logout'),
+    path('userPage/', userPage, name = 'userPage'),
     path('admin/', admin.site.urls),
     path('TWP/', include('TWP4.urls')),
     path('api/v1/groups/', GroupsApiView.as_view()),

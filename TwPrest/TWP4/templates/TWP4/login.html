@@ -1,0 +1,16 @@
+{% extends 'TWP4/newBase.html' %}
+{% load static %}
+
+
+{% block pageTitle %}
+TWP - вход
+{% endblock %}
+
+{% block mainContent %}
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Войти</button>
+</form>
+{% endblock %}
+

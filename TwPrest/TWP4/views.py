@@ -7,11 +7,13 @@ from .serializers import *
 from django.contrib.auth.models import User 
 from sympy import *
 from sympy.parsing.latex import parse_latex
+from rest_framework.permissions import DjangoObjectPermissions, DjangoModelPermissions
 
 
 class UsersApiView(generics.ListAPIView): 
     queryset = User.objects.all()
     serializer_class = UserSerializer
+    #permission_classes = (DjangoObjectPermissions,)
 
 class UserApiView(generics.RetrieveUpdateDestroyAPIView): 
     queryset = User.objects.all()
@@ -33,9 +35,12 @@ class NewGroupApiView(generics.CreateAPIView):
 
 
 #                                                           Here we work with Templates 
+
+
 class TemplatesApiView(generics.ListAPIView): 
     queryset = Template.objects.all()
     serializer_class = TemplateListSerializer
+    #permission_classes = (DjangoModelPermissions,)
 
 class TemplateApiView(generics.RetrieveUpdateDestroyAPIView): 
     queryset = Template.objects.all()
@@ -70,7 +75,7 @@ class setTemplExer(APIView):
             template.exercises.add(exercise)
             return Response({'chosen templ': template.name, 'chosen exer': exercise.name})
         except:
-            return Response({'error': 'whrong keys'})
+            return Response({'error': 'wrong keys'})
         
 class WorksApiView(generics.ListAPIView):  
     queryset = Work.objects.all()
@@ -97,8 +102,7 @@ class NewTaskApiView(generics.CreateAPIView):
     queryset = Work.objects.all()
     serializer_class = TaskPostSerializer  
 
-
-class TaskByUserWork(APIView):
+class TaskByUserWork(APIView):          # sharts when authenticated
     def post(self, request):
         try:
             student_id = request.data['student']
