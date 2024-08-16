@@ -1,4 +1,4 @@
-{% extends 'TWP4/newBase.html' %}
+{% extends 'TWP4/base.html' %}
 {% load static %}
 
 
@@ -8,7 +8,7 @@
 
 {% block leftPanelContent %} 
 <div id="subjectsList">
-    <ul>
+    <ul class="TWPlist">
         <span v-if="!allWorks">Здесь появится список работ!</span>
         <li v-for = '(work) in allWorks' v-on:click = 'openWork(work.id)'> 
             <span v-html = 'work.name'></span> 

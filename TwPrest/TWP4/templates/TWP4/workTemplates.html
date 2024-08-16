@@ -1,4 +1,4 @@
-{% extends 'TWP4/newBase.html' %}
+{% extends 'TWP4/base.html' %}
 {% load static %}
 
 {% block leftPanelHeader %} Список шаблонов работ {% endblock %}
@@ -13,7 +13,7 @@
 
 <div id="templatesList">
     <span v-if="!templates.length">Здесь появится список шаблонов.</span>
-    <ul>
+    <ul class="TWPlist">
         <li v-for = '(template, idx) in templates'> 
             <span v-on:click = "openTemplate(template.id)" v-html="template.name"> </span>  <button class = "btn-del" v-on:click = "deleteTemplate(template.id)">Х</button>
         </li>

@@ -1,13 +1,13 @@
-{% extends 'TWP4/newBase.html' %}
+{% extends 'TWP4/base.html' %}
 {% load static %}
 
 
 
-{% block leftPanelHeader %} все группы  {% endblock %}
+{% block leftPanelHeader %} Мои группы  {% endblock %}
 {% block leftPanelContent %} 
 <br>
 <div id="subjectsList">
-    <ul>
+    <ul class="TWPlist">
         <span v-if="!allGroups.length">Здесь появится список групп!</span>
         <li v-for = '(group) in allGroups' v-on:click = 'openGroup(group.id)'> 
             <span v-html="group.name"></span>
@@ -27,7 +27,7 @@
 <input type="text" id="workTitle" placeholder="Введите название группы"  minlength="20" size="14" v-on:input = "inputGroupName" v-bind:value = 'curentGroup.name'>
 <div class="row" id = "WorkEditor">
     <div id="aGroup">
-        <ol>
+        <ol >
             <li v-for = 'student in curentGroup.students'> 
                 <input type="text" v-bind:id="student.id" class="username" placeholder="Введите имя студента"  minlength="20" size="14" v-on:input = "userPropEdit" v-bind:value = 'student.first_name'>
                 <input type="text" v-bind:id="student.id" class="usersurname" placeholder="Введите фамилию студента"  minlength="20" size="14" v-on:input = "userPropEdit" v-bind:value = 'student.last_name'>
@@ -47,7 +47,7 @@
 
 
 
-{% block rightPanelHeader %}  {% endblock %}
+{% block rightPanelHeader %} Правая панель {% endblock %}
 
 {% block rightPanelContent %}  
 
