@@ -180,12 +180,12 @@ background-color: aquamarine;
 }
 
 .TWPlist {
-    list-style-type: none;
+    list-style-type: '- ';
 }
 
 .TWPlist li {
     margin-bottom: 7pt;
-    list-style-type: none;
+    /*list-style-type: none;*/
     
 }
 
