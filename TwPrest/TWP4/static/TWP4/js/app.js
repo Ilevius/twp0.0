@@ -2,6 +2,31 @@ const randInt = (min, max)=>{
     return Math.floor(Math.random() * (max - min) ) + min;
 }
 
+
+// matrix([a, b], [x^2, y-4])
+
+const randMatrix = (row, col)=>{
+    let matArray = []
+    let matNerdamer = 'matrix('
+    for (let i = 0; i < row; i++) {
+        let aRow = []
+        for (let j = 0; j < col; j++) {
+            let a = randInt(-5, 6)
+            aRow.push(a)
+        }
+        matArray.push(aRow)
+        matNerdamer += '['+aRow.toString()+'],'
+    } 
+    matNerdamer = matNerdamer.slice(0, matNerdamer.length-1) + ')'
+
+    let matrix = {matArray: matArray, matNerdamer:matNerdamer}
+    return matrix   
+}
+
+const clearNerdamerMatrix = (matrix)=>{
+    return `\\begin{matrix}${matrix.slice(15, matrix.length-13)}\\end{matrix}`
+}
+
 const random_function = (arg)=>{
     let index = 1
     switch(index) {
